@@ -1,3 +1,5 @@
+from core.alert_system import AlertSystem
+
 def demo_architecture():
     """Démontre l'utilisation de l'architecture complète"""
     
@@ -18,11 +20,86 @@ def demo_architecture():
         random_state=42
     )
     
+    # ===== DÉMONSTRATION DU SYSTÈME D'ALERTE =====
+    print("\n🚨 DÉMONSTRATION DU SYSTÈME D'ALERTE MÉDICALE")
+    print("-" * 70)
+    
+    # Initialiser le système d'alerte
+    alert_system = AlertSystem()
+    
+    # Exemple de données de patients
+    patients = [
+        {
+            'id': 'P001',
+            'name': 'Jean Dupont',
+            'vitals': {
+                'temperature': 38.7,
+                'heart_rate': 92,
+                'blood_pressure_systolic': 145,
+                'blood_pressure_diastolic': 95,
+                'oxygen_saturation': 97,
+                'respiratory_rate': 18
+            }
+        },
+        {
+            'id': 'P002',
+            'name': 'Marie Martin',
+            'vitals': {
+                'temperature': 40.5,
+                'heart_rate': 130,
+                'blood_pressure_systolic': 160,
+                'blood_pressure_diastolic': 85,
+                'oxygen_saturation': 82,
+                'respiratory_rate': 28
+            }
+        },
+        {
+            'id': 'P003',
+            'name': 'Pierre Durand',
+            'vitals': {
+                'temperature': 37.2,
+                'heart_rate': 75,
+                'blood_pressure_systolic': 120,
+                'blood_pressure_diastolic': 80,
+                'oxygen_saturation': 98,
+                'respiratory_rate': 16
+            }
+        }
+    ]
+    
+    # Vérifier les alertes pour chaque patient
+    for patient in patients:
+        print(f"\n🔍 Analyse du patient: {patient['name']} ({patient['id']})")
+        print("-" * 40)
+        
+        # Vérifier les signes vitaux
+        alerts = alert_system.check_vital_signs(patient['vitals'])
+        
+        # Afficher les alertes
+        print("📊 Signes vitaux:")
+        for param, value in patient['vitals'].items():
+            print(f"   • {param.replace('_', ' ').title()}: {value}")
+        
+        print("\n🚨 Alertes:")
+        print(alert_system.format_alerts(alerts))
+        
+        # Afficher une recommandation basée sur la sévérité
+        severities = [alert['severity'] for alert in alerts]
+        if 'high' in severities:
+            print("\n❌ RECOMMANDATION: Intervention médicale urgente requise!")
+        elif 'medium' in severities:
+            print("\n⚠️  RECOMMANDATION: Surveillance médicale recommandée.")
+        elif alerts:
+            print("\nℹ️  RECOMMANDATION: Surveillance standard.")
+        else:
+            print("\n✅ Aucune alerte - Paramètres dans les normes.")
+    
+    print("\n" + "=" * 70 + "\n")
+    
     # Créer un CSV temporaire pour simuler patient_data.csv
     df = pd.DataFrame(X, columns=[f'feature_{i}' for i in range(5)])
     df['diagnosis'] = y
     temp_csv = '/tmp/patient_data.csv'
-    df.to_csv(temp_csv, index=False)
     
     # ===== ÉTAPE 1 : CHARGEMENT DES DONNÉES (data/) =====
     print("\n1️⃣  CHARGEMENT DES DONNÉES (data/)")
@@ -233,8 +310,9 @@ AVANTAGES ARCHITECTURAUX :
 
 if __name__ == "__main__":
     demo_architecture()
-    explain_architecture()
-    answer_questions()
+    # Désactivez les appels suivants si nécessaire pour la démonstration
+    # explain_architecture()
+    # answer_questions()
     
     print("\n" + "=" * 70)
     print("✅ EXERCICE COMPLET : Architecture respectée !")
