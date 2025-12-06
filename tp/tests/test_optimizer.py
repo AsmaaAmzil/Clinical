@@ -20,7 +20,7 @@ def test_import_optimizer_module():
         current = current.parent
 
     if optimizer_path is None:
-        pytest.skip("core/optimizer.py introuvable dans l'environnement de test")
+        pytest.skip("core/optimizer.py introuvable dans l'env de test")
 
     # Charger le module depuis son chemin de fichier
     spec = importlib.util.spec_from_file_location("optimizer", optimizer_path)
